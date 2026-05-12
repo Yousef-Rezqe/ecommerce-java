@@ -1,147 +1,258 @@
-# 🛒 E-Commerce Web Application
+# CodeShelf
 
-A full-featured e-commerce platform built with **Java Servlets**, **JSP**, and **MySQL**, deployed on **Apache Tomcat**. The application covers the complete shopping experience — from product browsing and user authentication to order management and product reviews — with a RESTful API layer and Redis-based caching.
+CodeShelf is a full-stack e-commerce web application for selling programming and technology books.
+The project was built using Java EE (Jakarta EE) with a classic MVC architecture and focuses heavily on backend development, security, and clean project structure.
 
----
+The application allows users to browse books, create accounts, place orders, and write reviews, while admins can manage products, users, and customer orders through a dedicated dashboard.
 
-## 📌 Features
+## Tech Stack
 
-- **User Authentication** — Signup, login, logout with session management and JWT token support
-- **Product Catalog** — Browse and search products with a dedicated shop view
-- **Product Reviews** — Authenticated users can submit and view product ratings and reviews
-- **Order Management** — Place orders and view order confirmations
-- **Admin Panel** — Manage products, orders, and users from a dedicated admin interface
-- **REST API** — JSON API endpoints for products, reviews, and authentication
-- **Rate Limiting** — Per-IP request throttling via Redis to prevent abuse
-- **Security** — BCrypt password hashing, HTTP-only session cookies, JWT for API auth
-- **Connection Pooling** — HikariCP for efficient database connection management
-- **Caching** — Redis-backed product caching with configurable TTL
+Backend:
 
----
+* Java EE / Jakarta EE
+* Servlets
+* JSP + JSTL
+* Apache Tomcat
+* Maven
 
-## 🏗️ Architecture
+Database & Security:
 
-```
-src/
-├── controller/          # Servlet controllers (MVC pattern)
-│   ├── HomeServlet
-│   ├── ShopServlet
-│   ├── ProductServlet
-│   ├── LoginServlet / SignupServlet / LogoutServlet
-│   ├── OrderServlet / OrderConfirmServlet
-│   ├── ReviewServlet
-│   ├── AccountServlet / DeleteAccountServlet
-│   ├── AdminServlet
-│   ├── ContactServlet
-│   └── api/             # REST API endpoints
-│       ├── AuthApiServlet
-│       ├── ProductApiServlet
-│       └── ReviewApiServlet
-├── model/               # Domain models
-│   ├── User
-│   ├── Product
-│   ├── Order
-│   └── Review
-├── dao/                 # Data Access Layer (DAO pattern)
-│   ├── UserDAO
-│   ├── ProductDAO
-│   ├── OrderDAO
-│   └── ReviewDAO
-├── service/             # Business logic layer
-│   ├── AuthService
-│   ├── ProductService
-│   ├── ReviewService
-│   └── RateLimiter
-├── filter/              # Servlet filters
-│   ├── AuthFilter
-│   └── RateLimitFilter
-├── util/                # Utility classes
-│   ├── DBUtil
-│   ├── JwtUtil
-│   ├── RedisUtil
-│   ├── PasswordUtil
-│   └── JsonUtil
-└── config/
-    └── AppConfig
-```
+* MySQL
+* HikariCP
+* Redis
+* JWT Authentication
+* BCrypt Password Hashing
+
+Libraries:
+
+* Jackson / Gson
+* SLF4J
+* Jedis
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-| Layer | Technology |
-|---|---|
-| Language | Java 17 |
-| Web Framework | Jakarta Servlet 6.0 / JSP / JSTL 3.0 |
-| Server | Apache Tomcat |
-| Database | MySQL 8.x |
-| Cache | Redis (via Jedis 5.1.2) |
-| Connection Pool | HikariCP 5.1.0 |
-| Password Hashing | jBCrypt 0.4 |
-| Authentication | JWT (jjwt 0.12.5) |
-| JSON | Jackson 2.17 / Gson 2.10 |
-| Logging | SLF4J 2.0 |
-| Build Tool | Maven |
-| Packaging | WAR (deployed as ROOT.war) |
+### Authentication & Authorization
+
+* User signup and login
+* BCrypt password hashing
+* Session-based authentication
+* JWT authentication for REST APIs
+* Role-based access control (USER / ADMIN)
+
+### Product Management
+
+* Browse all books
+* Product search and filtering
+* Product details page
+* Admin CRUD operations for books
+* Stock management
+
+### Orders
+
+* Place orders with delivery details
+* Order confirmation page
+* User order history
+* Admin order management
+
+### Reviews
+
+* Add reviews and ratings
+* Product rating summaries
+* Recent reviews section
+
+### Performance & Security
+
+* Redis caching for products
+* Rate limiting using Redis
+* PreparedStatement for SQL injection protection
+* HTTP-only cookies
+* XSS protection using JSTL escaping
+
+### REST APIs
+
+* Authentication API
+* Product API
+* Review API
 
 ---
 
-## ⚙️ Configuration
+## Project Structure
 
-All settings are in `WEB-INF/classes/application.properties`:
+The project follows a layered MVC architecture:
+
+* View Layer (JSP)
+* Controller Layer (Servlets)
+* Service Layer
+* DAO Layer
+* Model Layer
+
+Request Flow:
+
+Browser
+→ Filters
+→ Servlet Controller
+→ Service Layer
+→ DAO Layer
+→ MySQL Database
+
+---
+
+## Main Components
+
+### Controllers
+
+Servlets handle incoming HTTP requests and forward responses to JSP pages.
+
+Examples:
+
+* LoginServlet
+* SignupServlet
+* ProductServlet
+* OrderServlet
+* AdminServlet
+
+### Services
+
+Contains business logic and validation.
+
+Examples:
+
+* AuthService
+* ProductService
+* ReviewService
+* RateLimiter
+
+### DAO Layer
+
+Responsible for all SQL operations.
+
+Examples:
+
+* UserDAO
+* ProductDAO
+* OrderDAO
+* ReviewDAO
+
+### Utilities
+
+Helper classes used across the application.
+
+Examples:
+
+* DBUtil
+* RedisUtil
+* JwtUtil
+* PasswordUtil
+* JsonUtil
+
+---
+
+## Redis Usage
+
+Redis is used for:
+
+* Product caching
+* Rate limiting
+
+Product lists are cached for 120 seconds to reduce database load and improve response time.
+
+The rate limiter uses a sliding window algorithm with a default limit of 60 requests per minute per IP.
+
+---
+
+## Security
+
+The project includes several security layers:
+
+* BCrypt password hashing
+* JWT token validation
+* Session authentication
+* Rate limiting
+* Role-based authorization
+* SQL injection prevention
+* XSS protection
+* HTTP-only cookies
+
+---
+
+## Database
+
+Main entities:
+
+* Users
+* Products
+* Orders
+* Reviews
+
+MySQL is used as the primary relational database.
+
+HikariCP is used for efficient database connection pooling.
+
+---
+
+## Setup
+
+### Requirements
+
+* Java 17+
+* Maven
+* MySQL 8
+* Redis
+* Apache Tomcat 10
+
+### Configuration
+
+Edit `application.properties`:
 
 ```properties
-# Database
-db.url=jdbc:mysql://localhost:3306/ecommerce?useSSL=false&serverTimezone=UTC
+db.url=jdbc:mysql://localhost:3306/ecommerce
 db.user=root
-db.password=your_password
-db.pool.size=10
+db.password=1234
 
-# Redis
 redis.host=localhost
 redis.port=6379
-redis.password=
 
-# JWT
-jwt.secret=change-me-to-a-long-random-secret-of-at-least-32-bytes
+jwt.secret=your-secret
 jwt.expiry.minutes=60
-
-# Caching
-cache.products.ttl.seconds=120
-
-# Rate Limiting
-ratelimit.requests=60
-ratelimit.window.seconds=60
 ```
-## 🚀 Getting Started
 
-### Prerequisites
+### Run the Project
 
-- Java 17+
-- Apache Tomcat 10+
-- MySQL 8.x
-- Redis (optional, for caching and rate limiting)
-- Maven 3.x
+```bash
+mvn clean package
+```
 
-
-## 🔐 Security Notes
-
-- Passwords are hashed using **BCrypt** — plain-text passwords are never stored.
-- Sessions use **HTTP-only cookies** to mitigate XSS risks.
-- API endpoints are protected with **JWT Bearer tokens**.
-- Rate limiting is enforced per IP using a sliding window algorithm backed by Redis.
+Deploy the generated WAR file to Tomcat.
 
 ---
 
-## 📡 API Endpoints
+## What I Focused On
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/login` | Authenticate and receive JWT |
-| POST | `/api/auth/signup` | Register a new user |
-| GET | `/api/products` | List all products |
-| GET | `/api/products/{id}` | Get product by ID |
-| GET | `/api/reviews/{productId}` | Get reviews for a product |
-| POST | `/api/reviews` | Submit a review (JWT required) |
+The main focus of this project was:
 
--
+* Building a clean backend architecture
+* Applying enterprise Java concepts
+* Improving scalability using caching and pooling
+* Implementing real security practices
+* Separating responsibilities between layers
+
+---
+
+## Future Improvements
+
+Possible future upgrades:
+
+* Payment gateway integration
+* Docker deployment
+* Elasticsearch search
+* Email notifications
+* Recommendation system
+* React frontend
+
+---
+
+## Author
+
+Developed as a backend-focused Java EE e-commerce project for learning enterprise application architecture and production-style backend development.
