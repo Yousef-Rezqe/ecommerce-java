@@ -1,0 +1,47 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>${not empty pageTitle ? pageTitle : 'CodeShelf'} &mdash; CodeShelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css?v=${applicationScope.buildVersion}"/>
+</head>
+<body>
+<div class="announce">📚 Free shipping on orders over <strong>$35</strong> &nbsp;&middot;&nbsp; 10,000+ programming titles &nbsp;&middot;&nbsp; New arrivals weekly</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="${pageContext.request.contextPath}/home" class="brand">
+      <span class="brand-icon">📖</span> CodeShelf
+    </a>
+    <ul class="nav-links">
+      <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+      <li><a href="${pageContext.request.contextPath}/shop">Books</a></li>
+      <li><a href="${pageContext.request.contextPath}/contact">Contact Us</a></li>
+    </ul>
+    <div class="nav-actions">
+      <c:choose>
+        <c:when test="${not empty sessionScope.user}">
+          <a href="${pageContext.request.contextPath}/account" class="user-chip">
+            <span class="user-avatar"><c:out value="${fn:toUpperCase(fn:substring(sessionScope.user.username,0,1))}"/></span>
+            <c:out value="${sessionScope.user.username}"/>
+            <c:if test="${sessionScope.user.role == 'ADMIN'}"><span class="role-pill">Admin</span></c:if>
+          </a>
+          <form action="${pageContext.request.contextPath}/logout" method="post" style="display:inline">
+            <button type="submit" class="btn btn-ghost btn-sm">Sign out</button>
+          </form>
+        </c:when>
+        <c:otherwise>
+          <a href="${pageContext.request.contextPath}/login" class="btn btn-ghost btn-sm">Sign in</a>
+          <a href="${pageContext.request.contextPath}/signup" class="btn btn-primary btn-sm">Register</a>
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </div>
+</header>
+<main>

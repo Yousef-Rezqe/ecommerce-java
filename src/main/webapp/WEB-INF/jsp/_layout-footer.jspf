@@ -1,0 +1,49 @@
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="brand"><span class="brand-icon">📖</span> CodeShelf</div>
+      <p style="margin-top:.75rem;">Your go-to store for programming books. From beginner guides to advanced system design — we have it all.</p>
+    </div>
+    <div>
+      <h4>Browse</h4>
+      <ul>
+        <li><a href="${pageContext.request.contextPath}/shop">All Books</a></li>
+        <li><a href="${pageContext.request.contextPath}/shop?cat=webdev">Web Development</a></li>
+        <li><a href="${pageContext.request.contextPath}/shop?cat=algorithms">Algorithms &amp; DSA</a></li>
+        <li><a href="${pageContext.request.contextPath}/shop?cat=devops">DevOps &amp; Cloud</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Account</h4>
+      <ul>
+        <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+        <c:choose>
+          <c:when test="${not empty sessionScope.user}">
+            <li><a href="${pageContext.request.contextPath}/account">My Dashboard</a></li>
+            <li><a href="${pageContext.request.contextPath}/logout">Sign Out</a></li>
+          </c:when>
+          <c:otherwise>
+            <li><a href="${pageContext.request.contextPath}/signup">Create Account</a></li>
+            <li><a href="${pageContext.request.contextPath}/login">Sign In</a></li>
+          </c:otherwise>
+        </c:choose>
+      </ul>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <ul>
+        <li><a href="${pageContext.request.contextPath}/contact">Contact Us</a></li>
+        <li><a href="#">Shipping Policy</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal">
+    <span>&copy; <%= java.time.Year.now() %> CodeShelf. All rights reserved.</span>
+    <span>Secure Checkout &middot; Fast Shipping &middot; Curated Titles</span>
+  </div>
+</footer>
+</body>
+</html>
