@@ -251,8 +251,3 @@ Possible future upgrades:
 * Recommendation system
 * React frontend
 
----
-
-## Author
-
-Developed as a backend-focused Java EE e-commerce project for learning enterprise application architecture and production-style backend development.
